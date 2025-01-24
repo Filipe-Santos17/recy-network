@@ -13,8 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from '@/components/ui/use-toast';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { useAuth } from '@/hooks/auth';
-import { useTheme } from "@/components/ui/theme-provider"
-import { NavigationMenuItem } from '@radix-ui/react-navigation-menu';
+
 import ModeToggle from '@/components/dark-mode';
 
 const profileFormSchema = z.object({
@@ -43,7 +42,6 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 export default function ProfileForm() {
   const { user } = useAuth();
   const [turnstileToken, setTurnstileToken] = useState<string>();
-  const {theme, setTheme} = useTheme()
 
   const form = useForm<ProfileFormValues>({
     // defaultValues,
