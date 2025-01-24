@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -13,8 +13,6 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from '@/components/ui/use-toast';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { useAuth } from '@/hooks/auth';
-
-import ModeToggle from '@/components/dark-mode';
 
 const profileFormSchema = z.object({
   email: z
@@ -143,17 +141,6 @@ export default function ProfileForm() {
             <Label htmlFor="option-waste">Waste Generator</Label>
           </div>
         </RadioGroup>
-
-        <div className="flex flex-col gap-2">
-          <h2 className="text-base">Dark Mode Preference</h2>
-          <Separator />
-        </div>
-
-        <div>
-          <Suspense>
-            <ModeToggle />
-          </Suspense>
-        </div>
 
         <Turnstile siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY} onSuccess={setTurnstileToken} />
         <Button type="submit">Save Changes</Button>
