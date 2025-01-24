@@ -22,7 +22,7 @@ import { addAccessTokenInterceptor } from './libs/axios/interceptors';
 import ProtectedRoutes from './components/protected-router';
 import { useAuth } from './hooks/auth';
 import { Loader2 } from 'lucide-react';
-import { useDarkMode } from './hooks/darkmode';
+import { ThemeProvider } from './components/ui/theme-provider';
 
 const router = createBrowserRouter([
   {
@@ -104,7 +104,6 @@ const router = createBrowserRouter([
 
 export function App() {
   const { getAccessTokenSilently } = useAuth();
-  useDarkMode()
   
   useEffect(() => {
     addAccessTokenInterceptor(getAccessTokenSilently);
@@ -112,7 +111,9 @@ export function App() {
 
   return (
     <main>
-      <RouterProvider router={router} fallbackElement={<Loader2 className="animate-spin" />} />
+      <ThemeProvider defaultTheme='dark' storageKey='dark-mode-preferable' >
+        <RouterProvider router={router} fallbackElement={<Loader2 className="animate-spin" />} />
+      </ThemeProvider>
     </main>
   );
 }

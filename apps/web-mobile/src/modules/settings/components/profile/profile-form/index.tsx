@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import { Suspense, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -13,7 +13,9 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from '@/components/ui/use-toast';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { useAuth } from '@/hooks/auth';
-import { useDarkMode } from '@/hooks/darkmode';
+import { useTheme } from "@/components/ui/theme-provider"
+import { NavigationMenuItem } from '@radix-ui/react-navigation-menu';
+import ModeToggle from '@/components/dark-mode';
 
 const profileFormSchema = z.object({
   email: z
@@ -41,7 +43,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 export default function ProfileForm() {
   const { user } = useAuth();
   const [turnstileToken, setTurnstileToken] = useState<string>();
-  const [darkModeState, setDarkModeState] = useDarkMode()
+  const {theme, setTheme} = useTheme()
 
   const form = useForm<ProfileFormValues>({
     // defaultValues,
@@ -58,11 +60,6 @@ export default function ProfileForm() {
       ),
       title: 'You submitted the following values:',
     });
-  }
-
-  function changeTypeUserPreference(e: MouseEvent<HTMLButtonElement>){
-    const newState = e.currentTarget.value === "active-dark-mode"
-    setDarkModeState(newState)
   }
 
   return (
@@ -154,26 +151,11 @@ export default function ProfileForm() {
           <Separator />
         </div>
 
-        <RadioGroup defaultValue="deactive-dark-mode">
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem 
-              checked={darkModeState} 
-              value="active-dark-mode" 
-              id="active-dark-mode" 
-              onClick={changeTypeUserPreference} 
-            />
-            <Label htmlFor="active-dark-mode">Activate</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem 
-              checked={!darkModeState} 
-              value="deactive-dark-mode" 
-              id="deactive-dark-mode" 
-              onClick={changeTypeUserPreference} 
-            />
-            <Label htmlFor="deactive-dark-mode">Deactivate</Label>
-          </div>
-        </RadioGroup>
+        <div>
+          <Suspense>
+            <ModeToggle />
+          </Suspense>
+        </div>
 
         <Turnstile siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY} onSuccess={setTurnstileToken} />
         <Button type="submit">Save Changes</Button>

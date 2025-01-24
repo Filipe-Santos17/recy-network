@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import LocaleToggler from '@/components/locale-toggler';
+import ModeToggle from '@/components/dark-mode';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -100,6 +101,12 @@ export function Menu() {
         <NavigationMenuItem>
           <Suspense>
             <LocaleToggler />
+          </Suspense>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Suspense>
+            <ModeToggle />
           </Suspense>
         </NavigationMenuItem>
 
